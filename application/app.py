@@ -1,7 +1,6 @@
 from flask import request, render_template, jsonify, url_for, redirect, g
 from .models import User
 from index import app, db
-from sqlalchemy.exc import IntegrityError
 from .utils.auth import generate_token, requires_auth, verify_token
 
 
