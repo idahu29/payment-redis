@@ -10,9 +10,9 @@ paypalrestsdk.configure({
   "client_id": config.PAYPAL_CLIENT_ID,
   "client_secret": config.PAYPAL_CLIENT_SECRET })
 
-paypal = Blueprint('paypal', __name__)
+paypal = Blueprint('paypal', __name__, url_prefix='/api/paypal')
 
-@paypal.route('/payment/create')
+@paypal.route('/payment/create', methods=["GET"])
 def create():
     # Do some stuff
   payment = paypalrestsdk.Payment({
@@ -20,7 +20,7 @@ def create():
       "payer": {
           "payment_method": "paypal"},
       "redirect_urls": {
-          "return_url": "http://localhost:3000/payment/execute",
+          "return_url": "http://localhost:3000/payment",
           "cancel_url": "http://localhost:3000/"},
       "transactions": [{
           "item_list": {
@@ -36,13 +36,14 @@ def create():
           "description": "This is the payment transaction description."}]})
 
   if payment.create():
-    logging.info("Payment created successfully")
+    logging.debug("Payment created successfully")
   else:
-    logging.info(payment.error)
+    logging.error(payment.error)
+    return jsonify('ABC')
     
 
 
-@paypal.route('/payment/execute')
+@paypal.route('/payment/execute', methods=["POST"])
 def about(user_url_slug):
     # Do some stuff
     return render_template('profile/about.html')

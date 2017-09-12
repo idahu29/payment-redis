@@ -3,7 +3,7 @@
 
 import pickle
 import os
-from util import logging
+import logging
 
 class DB(object):
   def __init__(self):
