@@ -1,18 +1,15 @@
 # facebook/views/profile.py
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify, request
 import paypalrestsdk
 import logging
 import config
 
-paypalrestsdk.configure({
-  "mode": config.PAYPAL_MODE, # sandbox or live
-  "client_id": config.PAYPAL_CLIENT_ID,
-  "client_secret": config.PAYPAL_CLIENT_SECRET })
+paypalrestsdk.configure(**config.PAYPAL)
 
-paypal = Blueprint('paypal', __name__, url_prefix='/api/paypal')
+paypal_payment = Blueprint('paypal_payment', __name__, url_prefix='/api/paypal')
 
-@paypal.route('/payment/create', methods=["GET"])
+@paypal_payment.route('/payment/create', methods=["GET"])
 def create():
     # Do some stuff
   payment = paypalrestsdk.Payment({
@@ -36,14 +33,21 @@ def create():
           "description": "This is the payment transaction description."}]})
 
   if payment.create():
-    logging.debug("Payment created successfully")
+    return jsonify("Payment created successfully")
   else:
-    logging.error(payment.error)
-    return jsonify('ABC')
+    return jsonify(payment.error)
     
 
 
-@paypal.route('/payment/execute', methods=["POST"])
-def about(user_url_slug):
-    # Do some stuff
-    return render_template('profile/about.html')
+@paypal_payment.route('/payment/execute', methods=["POST"])
+def execute():
+  payment_id = request.args.get('payment_id')
+  payer_id = request.args.get('payer_id')
+
+  payment = paypalrestsdk.Payment.find(payment_id)
+
+  if payment.execute({"payer_id": payer_id}):
+    return jsonify("Payment execute successfully")
+  else:
+    return jsonify(payment.error) # Error Hash
+  
