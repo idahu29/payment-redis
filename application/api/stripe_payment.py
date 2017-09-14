@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, jsonify, request
 import stripe
 import logging
 import config
+import json
 
 
 stripe.api_key = config.STRIPE['api_key']
@@ -28,10 +29,10 @@ def create():
   return jsonify(key)
     
 
-@stripe_payment.route('/payment/execute', methods=["GET"])
+@stripe_payment.route('/payment/execute', methods=["POST"])
 def execute():
   # test token: tok_visa
-  token = request.args.get('stripe_token')
+  token = json.loads(request.data).get('stripe_token')
   customer_id = request.args.get('customer_id', None)
   result = pay('123', 'HKD', 200, token, '123', customer_id)
   
@@ -49,7 +50,7 @@ def pay(tx_id, currency, amount, token, idempotency_key, customer_id=None,retrie
       customer=customer_id,
       description=config.PROJECT_NAME,
       statement_descriptor=config.PROJECT_NAME,
-      idempotency_key=idempotency_key,
+      idempotency_key=None,
       metadata={'transaction_id': tx_id})
 
 

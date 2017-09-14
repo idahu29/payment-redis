@@ -66,7 +66,15 @@ export class Header extends Component {
         return (
             <header>
                 <LeftNav open={this.state.open}>
-                    {
+                    <div>
+                        <MenuItem onClick={() => this.dispatchNewRoute('/')}>
+                            General UI
+                        </MenuItem>
+                        <MenuItem onClick={() => this.dispatchNewRoute('/')}>
+                            Custom UI
+                        </MenuItem>
+                    </div>
+                    {/*
                         !this.props.isAuthenticated ?
                             <div>
                                 <MenuItem onClick={() => this.dispatchNewRoute('/login')}>
@@ -87,10 +95,10 @@ export class Header extends Component {
                                     Logout
                                 </MenuItem>
                             </div>
-                    }
+                    */}
                 </LeftNav>
                 <AppBar
-                  title="React-Redux-Flask"
+                  title="Payment Demo"
                   onLeftIconButtonTouchTap={() => this.openNav()}
                   iconElementRight={
                       <FlatButton label="Home" onClick={() => this.dispatchNewRoute('/')} />

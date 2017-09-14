@@ -77,6 +77,12 @@ const common = {
             }),
         ]
     ),
+
+    externals:{
+        'paypal': 'paypal',
+        'braintree': 'braintree',
+        'StripeCheckout': 'stripe_checkout'
+    }
 };
 
 if (TARGET === 'start' || !TARGET) {

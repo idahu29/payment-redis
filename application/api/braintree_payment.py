@@ -11,19 +11,20 @@ braintree.Configuration.configure(
 
 braintree_payment = Blueprint('braintree_payment', __name__, url_prefix='/api/braintree')
 
-@braintree_payment.route('/payment/create', methods=["GET"])
+@braintree_payment.route('/payment/create', methods=["POST"])
 def create():
   return braintree.ClientToken.generate()
 
 
-@braintree_payment.route('/payment/execute', methods=["GET"])
+@braintree_payment.route('/payment/execute', methods=["POST"])
 def execute():
     # Do some stuff
   # test nonce: fake-valid-nonce  
   nonce_from_the_client = request.args.get("payment_method_nonce")
+  amount = request.args.get("amount")
 
   result = braintree.Transaction.sale({
-    "amount": "10.00",
+    "amount": amount,
     "payment_method_nonce": nonce_from_the_client,
     "options": {
       "submit_for_settlement": True

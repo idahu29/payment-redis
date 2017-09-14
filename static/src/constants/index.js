@@ -9,3 +9,8 @@ export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST';
 
 export const FETCH_PROTECTED_DATA_REQUEST = 'FETCH_PROTECTED_DATA_REQUEST';
 export const RECEIVE_PROTECTED_DATA = 'RECEIVE_PROTECTED_DATA';
+
+
+export const CREATE_PAYMENT_URL = '/api/paypal/payment/create';
+
+export const EXECUTE_PAYMENT_URL = '/api/paypal/payment/execute';
