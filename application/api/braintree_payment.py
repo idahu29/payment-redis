@@ -20,11 +20,11 @@ def create():
 def execute():
     # Do some stuff
   # test nonce: fake-valid-nonce  
-  nonce_from_the_client = request.args.get("payment_method_nonce")
-  amount = request.args.get("amount")
+  nonce_from_the_client = request.form["payment_method_nonce"]
+  amount = request.form["amount"]
 
   result = braintree.Transaction.sale({
-    "amount": amount,
+    "amount": 123,
     "payment_method_nonce": nonce_from_the_client,
     "options": {
       "submit_for_settlement": True
