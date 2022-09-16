@@ -21,7 +21,7 @@ idna==2.6
 ipaddress==1.0.18
 itsdangerous==0.24
 Jinja2==2.8
-Mako==1.0.4
+Mako==1.2.2
 MarkupSafe==0.23
 mysql-connector==2.1.4
 ndg-httpsclient==0.4.3
